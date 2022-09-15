@@ -49,7 +49,11 @@ internal class ContentValidator : ICollectionFactory
                 fileResolver.ResolveFilePath(_config.MarkdownValidationRules),
                 fileResolver.ResolveFilePath(_config.Allowlists),
                 fileResolver.ResolveFilePath(_config.SandboxEnabledModuleList),
-                this);
+                this,
+                GetDocsEnvironment().ToString(),
+                _config.HostName,
+                GetRepositoryId());
+            Log.Write($"Brokenlink validation test: env: {GetDocsEnvironment()}, host name: {_config.HostName}, repo id: {GetRepositoryId()}");
         }
         catch (Exception ex)
         {
@@ -340,5 +344,17 @@ internal class ContentValidator : ICollectionFactory
                 return null;
             }
         }
+    }
+
+    private static DocsEnvironment GetDocsEnvironment()
+    {
+        return Enum.TryParse(Environment.GetEnvironmentVariable("DOCS_ENVIRONMENT"), true, out DocsEnvironment docsEnvironment)
+            ? docsEnvironment
+            : DocsEnvironment.Prod;
+    }
+
+    private static string GetRepositoryId()
+    {
+        return Environment.GetEnvironmentVariable("DOCS_REPOSITORY_ID") ?? string.Empty;
     }
 }
