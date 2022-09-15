@@ -51,9 +51,9 @@ internal class ContentValidator : ICollectionFactory
                 fileResolver.ResolveFilePath(_config.SandboxEnabledModuleList),
                 this,
                 GetDocsEnvironment().ToString(),
-                _config.HostName,
+                _config.SiteName,
                 GetRepositoryId());
-            Log.Write($"Brokenlink validation test: env: {GetDocsEnvironment()}, host name: {_config.HostName}, repo id: {GetRepositoryId()}");
+            Log.Write($"Brokenlink validation test: env: {GetDocsEnvironment()}, host name: {_config.SiteName}, repo id: {GetRepositoryId()}");
         }
         catch (Exception ex)
         {
