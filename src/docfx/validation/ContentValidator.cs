@@ -3,9 +3,10 @@
 
 using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using Microsoft.Docs.Validation;
-using Microsoft.Docs.Validation.Common;
 using Microsoft.Extensions.Configuration;
+using static Microsoft.Docs.BrokenLinkService.Validator.ConfigModel.BrokenLinkValidatorConfig;
 
 namespace Microsoft.Docs.Build;
 
@@ -349,12 +350,13 @@ internal class ContentValidator : ICollectionFactory
     private static UserSetting GetUserSetting(DocsEnvironment environment)
     {
         var configurationBuilder = new ConfigurationBuilder();
-        var configPath = "validation/brokenLinkValidationUserSetting/";
-        configurationBuilder.AddJsonFile(configPath + "config.json");
+        configurationBuilder.AddJsonStream(
+            Assembly.GetExecutingAssembly().GetManifestResourceStream("docfx.validation.brokenLinkValidationUserSetting.config.json"));
 
         if (environment == DocsEnvironment.Prod || environment == DocsEnvironment.PPE)
         {
-            configurationBuilder.AddJsonFile(configPath + $"config.{environment.ToString().ToLowerInvariant()}.json");
+            configurationBuilder.AddJsonStream(Assembly.GetExecutingAssembly().GetManifestResourceStream(
+                $"docfx.validation.brokenLinkValidationUserSetting.config.{environment.ToString().ToLowerInvariant()}.json"));
         }
 
         return configurationBuilder.Build().Get<UserSetting>();

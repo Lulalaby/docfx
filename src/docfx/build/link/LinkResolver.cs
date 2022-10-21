@@ -139,6 +139,10 @@ internal class LinkResolver
             return (errors, "", fragment, linkType, null, false);
         }
 
+        Log.Write($"=============================================");
+        Log.Write($"{EnvironmentVariable.RepositoryUrl}");
+        Log.Write($"{EnvironmentVariable.PublishRepositoryUrl}");
+        Log.Write($"=============================================");
         ValidateLink(
             inclusionRoot,
             linkNode,
